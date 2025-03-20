@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from utils import calculate_monthly_payment, calculate_total_cost
+from utils import calculate_bmi, calculate_bmr
 
 app = Flask(__name__)
 
@@ -7,19 +7,46 @@ app = Flask(__name__)
 def home():
     return render_template('home.html')
 
-@app.route('/calculate', methods=['POST'])
-def calculate():
-    loan_amount = float(request.form['loan_amount'])
-    duration_years = int(request.form['duration'])
-    annual_interest_rate = float(request.form['interest_rate'])
+@app.route('/calculate_bmi', methods=['POST'])
+def calculate_bmi_endpoint():
+    try:
+        # Récupération des données envoyées en POST
+        height = float(request.form['height'])
+        weight = float(request.form['weight'])
 
-    monthly_payment = calculate_monthly_payment(loan_amount, duration_years, annual_interest_rate)
-    total_cost = calculate_total_cost(monthly_payment, duration_years)
+        # Calcul du BMI
+        bmi = calculate_bmi(height, weight)
 
-    return jsonify({
-        'monthly_payment': monthly_payment,
-        'total_cost': total_cost
-    })
+        # Retourner les résultats sous forme de JSON
+        return jsonify({
+            'bmi': bmi
+        })
+    except ValueError:
+        return jsonify({
+            'error': 'Invalid input. Please provide valid numeric values for height and weight.'
+        }), 400
+
+@app.route('/calculate_bmr', methods=['POST'])
+def calculate_bmr_endpoint():
+    try:
+        # Récupération des données envoyées en POST
+        height = float(request.form['height'])
+        weight = float(request.form['weight'])
+        age = int(request.form['age'])
+        gender = request.form['gender'].lower()
+
+        # Calcul du BMR
+        bmr = calculate_bmr(height, weight, age, gender)
+
+        # Retourner les résultats sous forme de JSON
+        return jsonify({
+            'bmr': bmr
+        })
+    except ValueError:
+        return jsonify({
+            'error': 'Invalid input. Please provide valid numeric values for height, weight, age and a valid gender (male/female).'
+        }), 400
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
+

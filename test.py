@@ -1,29 +1,52 @@
 import unittest
-from utils import calculate_monthly_payment, calculate_total_cost
+from utils import calculate_bmi, calculate_bmr
 
-class TestLoanCalculatorUtils(unittest.TestCase):
-    def test_calculate_monthly_payment_with_interest(self):
-        loan_amount = 10000
-        duration_years = 5
-        annual_interest_rate = 5
-        expected_payment = 188.71
-        result = calculate_monthly_payment(loan_amount, duration_years, annual_interest_rate)
-        self.assertAlmostEqual(result, expected_payment, places=2)
+class TestHealthCalculatorUtils(unittest.TestCase):
 
-    def test_calculate_monthly_payment_no_interest(self):
-        loan_amount = 10000
-        duration_years = 5
-        annual_interest_rate = 0
-        expected_payment = 166.67
-        result = calculate_monthly_payment(loan_amount, duration_years, annual_interest_rate)
-        self.assertAlmostEqual(result, expected_payment, places=2)
+    def test_calculate_bmi(self):
+        # Test avec un cas de BMI normal
+        height = 1.75  # taille en mètres
+        weight = 70    # poids en kilogrammes
+        expected_bmi = 22.86  # résultat attendu
+        result = calculate_bmi(height, weight)
+        self.assertAlmostEqual(result, expected_bmi, places=2)
 
-    def test_calculate_total_cost(self):
-        monthly_payment = 188.71
-        duration_years = 5
-        expected_total_cost = 11322.6
-        result = calculate_total_cost(monthly_payment, duration_years)
-        self.assertAlmostEqual(result, expected_total_cost, places=2)
+    def test_calculate_bmi_underweight(self):
+        # Test pour un cas de sous-poids
+        height = 1.80  # taille en mètres
+        weight = 50    # poids en kilogrammes
+        expected_bmi = 15.43  # résultat attendu
+        result = calculate_bmi(height, weight)
+        self.assertAlmostEqual(result, expected_bmi, places=2)
+
+    def test_calculate_bmr_male(self):
+        # Test pour un homme
+        height = 175  # taille en cm
+        weight = 70   # poids en kg
+        age = 25      # âge en années
+        gender = 'male'
+        expected_bmr = 1724.05  # résultat attendu ajusté
+        result = calculate_bmr(height, weight, age, gender)
+        self.assertAlmostEqual(result, expected_bmr, places=2)
+
+    def test_calculate_bmr_female(self):
+        # Test pour une femme
+        height = 160  # taille en cm
+        weight = 60   # poids en kg
+        age = 30      # âge en années
+        gender = 'female'
+        expected_bmr = 1368.19  # résultat attendu ajusté
+        result = calculate_bmr(height, weight, age, gender)
+        self.assertAlmostEqual(result, expected_bmr, places=2)
+
+    def test_calculate_bmr_invalid_gender(self):
+        # Test pour un genre invalide
+        height = 175  # taille en cm
+        weight = 70   # poids en kg
+        age = 25      # âge en années
+        gender = 'other'
+        with self.assertRaises(ValueError):
+            calculate_bmr(height, weight, age, gender)
 
 if __name__ == '__main__':
     unittest.main()

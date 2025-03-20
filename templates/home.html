@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loan Calculator</title>
+    <title>Health Calculator</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         .container { max-width: 500px; margin: auto; }
         .input-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; }
-        input[type="number"] { width: 100%; padding: 8px; }
+        input[type="number"], input[type="text"] { width: 100%; padding: 8px; }
         button { padding: 10px 20px; background-color: #007BFF; color: white; border: none; cursor: pointer; }
         button:hover { background-color: #0056b3; }
         .result { margin-top: 20px; font-size: 1.1em; }
@@ -18,36 +18,69 @@
 </head>
 <body>
     <div class="container">
-        <h2>Loan Calculator</h2>
+        <h2>Health Calculator</h2>
+        
         <div class="input-group">
-            <label for="loan_amount">Loan Amount ($)</label>
-            <input type="number" id="loan_amount" name="loan_amount" required>
+            <label for="height">Height (in meters)</label>
+            <input type="number" id="height" name="height" step="0.01" required>
         </div>
+        
         <div class="input-group">
-            <label for="duration">Duration (years)</label>
-            <input type="number" id="duration" name="duration" required>
+            <label for="weight">Weight (in kg)</label>
+            <input type="number" id="weight" name="weight" step="0.1" required>
         </div>
-        <div class="input-group">
-            <label for="interest_rate">Interest Rate (%)</label>
-            <input type="number" id="interest_rate" name="interest_rate" step="0.01" required>
-        </div>
-        <button onclick="calculateLoan()">Calculate</button>
 
+        <button type="button" onclick="calculateBMI()">Calculate BMI</button>
+        
         <div class="result">
-            <p>Monthly Payment: $<span id="monthly_payment">0.00</span></p>
-            <p>Total Cost of Loan: $<span id="total_cost">0.00</span></p>
+            <p>BMI: <span id="bmi_result">0.00</span></p>
+        </div>
+
+        <hr>
+
+        <div class="input-group">
+            <label for="age">Age (in years)</label>
+            <input type="number" id="age" name="age" required>
+        </div>
+
+        <div class="input-group">
+            <label for="gender">Gender (male/female)</label>
+            <input type="text" id="gender" name="gender" required>
+        </div>
+
+        <button type="button" onclick="calculateBMR()">Calculate BMR</button>
+        
+        <div class="result">
+            <p>BMR: <span id="bmr_result">0.00</span></p>
         </div>
     </div>
 
     <script>
-        function calculateLoan() {
-            const loan_amount = parseFloat(document.getElementById('loan_amount').value);
-            const duration = parseInt(document.getElementById('duration').value);
-            const interest_rate = parseFloat(document.getElementById('interest_rate').value);
+        function calculateBMI() {
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
 
-            $.post('/calculate', { loan_amount, duration, interest_rate }, function(data) {
-                $('#monthly_payment').text(data.monthly_payment.toFixed(2));
-                $('#total_cost').text(data.total_cost.toFixed(2));
+            $.post('/calculate_bmi', { height, weight }, function(data) {
+                if (data.bmi) {
+                    $('#bmi_result').text(data.bmi.toFixed(2));
+                } else {
+                    alert(data.error || 'An error occurred.');
+                }
+            });
+        }
+
+        function calculateBMR() {
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const age = parseInt(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value.toLowerCase();
+
+            $.post('/calculate_bmr', { height, weight, age, gender }, function(data) {
+                if (data.bmr) {
+                    $('#bmr_result').text(data.bmr.toFixed(2));
+                } else {
+                    alert(data.error || 'An error occurred.');
+                }
             });
         }
     </script>
