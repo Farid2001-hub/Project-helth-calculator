@@ -10,9 +10,10 @@ def home():
 @app.route('/calculate_bmi', methods=['POST'])
 def calculate_bmi_endpoint():
     try:
-        # Récupération des données envoyées en POST
-        height = float(request.form['height'])
-        weight = float(request.form['weight'])
+        # Récupération des données envoyées en JSON
+        data = request.get_json()
+        height = float(data['height'])
+        weight = float(data['weight'])
 
         # Calcul du BMI
         bmi = calculate_bmi(height, weight)
@@ -21,7 +22,7 @@ def calculate_bmi_endpoint():
         return jsonify({
             'bmi': bmi
         })
-    except ValueError:
+    except (ValueError, KeyError):
         return jsonify({
             'error': 'Invalid input. Please provide valid numeric values for height and weight.'
         }), 400
@@ -29,11 +30,12 @@ def calculate_bmi_endpoint():
 @app.route('/calculate_bmr', methods=['POST'])
 def calculate_bmr_endpoint():
     try:
-        # Récupération des données envoyées en POST
-        height = float(request.form['height'])
-        weight = float(request.form['weight'])
-        age = int(request.form['age'])
-        gender = request.form['gender'].lower()
+        # Récupération des données envoyées en JSON
+        data = request.get_json()
+        height = float(data['height'])
+        weight = float(data['weight'])
+        age = int(data['age'])
+        gender = data['gender'].lower()
 
         # Calcul du BMR
         bmr = calculate_bmr(height, weight, age, gender)
@@ -42,11 +44,10 @@ def calculate_bmr_endpoint():
         return jsonify({
             'bmr': bmr
         })
-    except ValueError:
+    except (ValueError, KeyError):
         return jsonify({
-            'error': 'Invalid input. Please provide valid numeric values for height, weight, age and a valid gender (male/female).'
+            'error': 'Invalid input. Please provide valid numeric values for height, weight, age, and a valid gender (male/female).'
         }), 400
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
-
