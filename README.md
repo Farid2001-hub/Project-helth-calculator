@@ -15,23 +15,6 @@ Un microservice Python qui calcule des métriques de santé (IMC et MB) via une 
 - **Interface utilisateur web**
   - Formulaires pour calculer l'IMC et le MB directement dans le navigateur
   - Documentation des API intégrée
-
-## Structure du projet
-
-```
-PROJECT-HEALTH-CALCULATOR/
-├── .github/
-│   └── workflows/
-│       └── ci-cd.yml          # Configuration CI/CD GitHub Actions
-├── health-calculator-service/
-│   ├── app.py                 # Application Flask avec endpoints et interface utilisateur
-│   ├── health_utils.py        # Fonctions utilitaires pour les calculs
-│   └── test.py                # Tests unitaires
-├── Dockerfile                 # Configuration Docker
-├── Makefile                   # Automatisation des tâches
-├── README.md                  # Documentation du projet
-├── requirements.txt           # Dépendances du projet
-└── Health app Project.pdf     # Documentation du projet original
 ```
 
 ## Prérequis
