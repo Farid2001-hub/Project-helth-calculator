@@ -23,3 +23,14 @@ docker_run:
 # Nettoyer les images Docker inutilisées
 clean:
 		docker rmi health-calculator
+
+test-endpoints:
+	@echo "\nTesting BMI endpoint..."
+	curl -X POST http://localhost:5000/calculate_bmi \
+		-H "Content-Type: application/json" \
+		-d '{"height": 1.75, "weight": 70}'
+	@echo "\n\nTesting BMR endpoint..."
+	curl -X POST http://localhost:5000/calculate_bmr \
+		-H "Content-Type: application/json" \
+		-d '{"height": 175, "weight": 70, "age": 30, "gender": "male"}'
+	@echo "\n"
