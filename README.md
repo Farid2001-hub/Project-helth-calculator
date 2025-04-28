@@ -189,3 +189,44 @@ curl -X POST http://localhost:5000/calculate_bmr \
 
 Cela vous permet de tester les API facilement sur votre machine locale en utilisant les commandes `curl`.
 
+## CI/CD et Déploiement
+
+Ce projet utilise **GitHub Actions** pour l'intégration continue et le déploiement continu (CI/CD), et **Azure App Service** pour l'hébergement.
+
+### Création de l'Application sur Azure App Service
+
+1. **Accédez au portail Azure** : Ouvrez [Azure Portal](https://portal.azure.com/) et connectez-vous à votre compte.
+2. **Créez une nouvelle Application Web** :
+   - Allez dans **App Services**.
+   - Cliquez sur **Create** pour créer une nouvelle application web.
+   - Sélectionnez les paramètres appropriés pour votre application, comme le nom de l'application (qui doit être unique).
+   - Dans la section **Publish**, choisissez **Code** (si vous utilisez un fichier app.py ou un code Python).
+   - Sélectionnez la pile d'exécution (par exemple, Python) et la région.
+   - la liaison de azure avec le repo github
+   - Terminez la création de l'application.
+
+### Pipeline CI/CD
+
+Le pipeline CI/CD est configuré dans le fichier `.github/workflows/ci-cd.yml` et effectue les actions suivantes:
+
+1. **Build**: 
+   - Vérifie le code source.
+   - Configure l'environnement Python.
+   - Installe les dépendances.
+   - Exécute les tests unitaires.
+   - Construit l'image Docker.
+
+2. **Deploy**:
+   - Déploie l'image Docker sur **Azure App Service**.
+   - Le déploiement est automatiquement déclenché lors d'un push sur la branche `main`.
+
+### Application déployée
+
+L'application est déployée et accessible à l'URL suivante:
+```
+https://helth-app-hpcec5cabgcecgdy.eastus-01.azurewebsites.net/
+```
+
+
+
+
