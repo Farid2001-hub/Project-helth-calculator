@@ -59,30 +59,61 @@
         function calculateBMI() {
             const height = parseFloat(document.getElementById('height').value);
             const weight = parseFloat(document.getElementById('weight').value);
-
-            $.post('/calculate_bmi', { height, weight }, function(data) {
-                if (data.bmi) {
-                    $('#bmi_result').text(data.bmi.toFixed(2));
-                } else {
-                    alert(data.error || 'An error occurred.');
+    
+            // Vérifier si les entrées sont valides
+            if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+                alert("Please enter valid positive values for height and weight.");
+                return;
+            }
+    
+            $.ajax({
+                url: '/calculate_bmi',
+                type: 'POST',
+                contentType: 'application/json',  // S'assurer que le type de contenu est JSON
+                dataType: 'json',
+                data: JSON.stringify({ height: height, weight: weight }),  // Convertir en JSON
+                success: function(data) {
+                    if (data.bmi) {
+                        $('#bmi_result').text(data.bmi.toFixed(2));  // Afficher le résultat du BMI
+                    } else {
+                        alert(data.error || 'An error occurred.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('An error occurred: ' + error);  // Afficher l'erreur si elle se produit
                 }
             });
         }
-
+    
         function calculateBMR() {
             const height = parseFloat(document.getElementById('height').value);
             const weight = parseFloat(document.getElementById('weight').value);
             const age = parseInt(document.getElementById('age').value);
             const gender = document.getElementById('gender').value.toLowerCase();
-
-            $.post('/calculate_bmr', { height, weight, age, gender }, function(data) {
-                if (data.bmr) {
-                    $('#bmr_result').text(data.bmr.toFixed(2));
-                } else {
-                    alert(data.error || 'An error occurred.');
+    
+            // Vérifier si les entrées sont valides
+            if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0 || isNaN(age) || !['male', 'female'].includes(gender)) {
+                alert("Please enter valid values for height, weight, age, and gender.");
+                return;
+            }
+    
+            $.ajax({
+                url: '/calculate_bmr',
+                type: 'POST',
+                contentType: 'application/json',  // S'assurer que le type de contenu est JSON
+                dataType: 'json',
+                data: JSON.stringify({ height: height, weight: weight, age: age, gender: gender }),  // Convertir en JSON
+                success: function(data) {
+                    if (data.bmr) {
+                        $('#bmr_result').text(data.bmr.toFixed(2));  // Afficher le résultat du BMR
+                    } else {
+                        alert(data.error || 'An error occurred.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('An error occurred: ' + error);  // Afficher l'erreur si elle se produit
                 }
             });
         }
     </script>
-</body>
-</html>
+    
