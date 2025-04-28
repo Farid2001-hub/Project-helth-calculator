@@ -33,7 +33,6 @@ jobs:
       
       - name: Run tests
         run: |
-          cd health-calculator-service
           pip install pytest
           python -m unittest test.py
       
