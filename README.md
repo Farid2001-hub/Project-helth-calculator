@@ -208,7 +208,7 @@ Ce projet utilise **GitHub Actions** pour l'intégration continue et le déploie
 
 ### Pipeline CI/CD
 
-Le pipeline CI/CD est configuré dans le fichier `.github/workflows/ci-cd.yml` et effectue les actions suivantes:
+Le pipeline CI/CD est configuré dans le fichier `.github/workflows/main_helth-app.yml` et effectue les actions suivantes:
 
 1. **Build**: 
    - Vérifie le code source.
