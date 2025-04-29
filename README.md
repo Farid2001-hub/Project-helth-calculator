@@ -112,6 +112,7 @@ deactivate
 | `make init` | Installe les dépendances nécessaires |
 | `make run` | Lance l'application en mode développement |
 | `make test` | Exécute les tests unitaires |
+| `make test endpoints` | Exécute les tests endpoints |
 | `make build` | Construit l'image Docker |
 | `make docker-run` | Lance l'application dans un conteneur Docker |
 | `make docker-stop` | Arrête le conteneur Docker |
@@ -126,8 +127,8 @@ deactivate
 **Corps de la requête**:
 ```json
 {
-  "height": 1.75,  // Taille en mètres
-  "weight": 70     // Poids en kilogrammes
+  "height": 1.90,  // Taille en mètres
+  "weight": 84     // Poids en kilogrammes
 }
 ```
 
@@ -135,14 +136,14 @@ deactivate
 ```bash
 curl -X POST http://localhost:5000/calculate_bmi \
   -H "Content-Type: application/json" \
-  -d '{"height": 1.75, "weight": 70}'
+  -d '{"height": 1.90, "weight": 84}'
 
 ```
 
 **Réponse**:
 ```json
 {
-  "bmi": 22.86
+  "bmi": 23.27
 }
 
 ```
@@ -154,9 +155,9 @@ curl -X POST http://localhost:5000/calculate_bmi \
 **Corps de la requête**:
 ```json
 {
-  "height": 175,     // Taille en centimètres
-  "weight": 70,      // Poids en kilogrammes
-  "age": 30,         // Âge en années
+  "height": 190,     // Taille en centimètres
+  "weight": 84,      // Poids en kilogrammes
+  "age": 24,         // Âge en années
   "gender": "male"   // Genre: "male" ou "female"
 }
 
@@ -166,14 +167,14 @@ curl -X POST http://localhost:5000/calculate_bmi \
 ```bash
 curl -X POST http://localhost:5000/calculate_bmr \
   -H "Content-Type: application/json" \
-  -d '{"height": 175, "weight": 70, "age": 30, "gender": "male"}'
+  -d '{"height": 190, "weight": 84, "age": 24, "gender": "male"}'
 
 ```
 
 **Réponse**:
 ```json
 {
-  "bmr": 1695.67,
+  "bmr": 1989.27,
   "unit": "calories/day"
 }
 ```
